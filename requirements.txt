@@ -1,0 +1,6 @@
+gevent
+gevent-websocket
+greenlet
+jsonpickle
+requests
+tinydb

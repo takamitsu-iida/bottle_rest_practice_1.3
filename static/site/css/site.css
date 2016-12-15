@@ -1,0 +1,276 @@
+@charset "UTF-8";
+body {
+  /* Move down content because we have a fixed navbar that is 50px tall */
+  padding-top: 50px;
+}
+
+
+/*
+ * AngularJS
+ * ng-cloak属性
+ */
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
+  display: none !important;
+}
+
+
+/*
+ * AngularJS
+ * アニメーション設定
+ * 要素にclass="animated"を指定する
+ */
+
+.animated.ng-enter,
+.animated.ng-leave,
+.animated.ng-move {
+  -webkit-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+
+.animated.ng-enter {
+  opacity: 0;
+}
+
+.animated.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+
+.animated.ng-leave {
+  opacity: 1;
+}
+
+.animated.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.animated.ng-move {
+  opacity: .5;
+}
+
+.animated.ng-move.ng-move-active {
+  opacity: 1;
+}
+
+/*
+ * ui-viewで画面を切り替えるときにアニメーションをかける
+ */
+
+[ui-view].animated.ng-enter,
+[ui-view].animated.ng-leave {
+  -webkit-transition: all 0.6s ease-in-out;
+  -moz-transition: all 0.6s ease-in-out;
+  -o-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+}
+
+[ui-view].animated.ng-enter,
+[ui-view].animated.ng-leave-active {
+  opacity: 0;
+}
+
+[ui-view].animated.ng-leave,
+[ui-view].animated.ng-enter-active {
+  opacity: 1;
+}
+
+[ui-view].slideX {
+  -webkit-transition: -webkit-transform .7s ease-in-out;
+  -moz-transition: -moz-transform .7s ease-in-out;
+  -o-transition: -o-transform .7s ease-in-out;
+  transition: transform .7s ease-in-out;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+[ui-view].slideX.ng-enter {
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
+
+[ui-view].slideX.ng-enter.ng-enter-active,
+.slide.ng-leave {
+  position: absolute;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+}
+
+[ui-view].slideX.ng-leave.ng-leave-active {
+  -webkit-transform: translateX(100%);
+  transform: translateX(100%);
+}
+
+/*
+ * トップページ
+ */
+
+.about-links {
+  color: #95a5a6;
+}
+
+.about-links a {
+  border-bottom: 1px dotted;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.about-links li {
+  line-height: 30px;
+}
+
+.about-links li:hover,
+.about-links li:hover a {
+  color: #666;
+}
+
+.about-links .date:hover i {
+  color: #e74c3c;
+}
+
+.about-links .author:hover i {
+  color: #f39c12;
+}
+
+.about-links .mail:hover i {
+  color: #16a085;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+pre {
+  overflow: auto;
+  word-wrap: normal;
+}
+
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+
+.navbar-fixed-top {
+  border: 0;
+}
+
+
+/*
+ * Sidebar
+ */
+
+
+/* Hide for mobile, show later */
+
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
+}
+
+.nav-sidebar {
+  margin-right: -21px;
+  /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * テーブルで選択した行のクラス
+ */
+
+.selectedRow {
+  background-color: black;
+  color: white;
+  font-weight: bold;
+}
+
+
+/*
+ * 丸くしたinput
+ */
+
+.input-search {
+  width: 98%;
+  padding: 5px 10px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 16px;
+  border-radius: 13px;
+  border: 1px solid #aaa;
+  outline: none;
+}
+
+.input-search:focus {
+  border-color: #008ed6;
+}
+
+
+/*
+ * リアルサーバ一覧を表示するwell
+ */
+
+#well_real {
+  height: 600px;
+  margin-bottom: 0;
+  overflow-y: scroll;
+}

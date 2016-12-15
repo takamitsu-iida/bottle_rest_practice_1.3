@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <!-- IE9以降で正しく機能するようにする -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- デスクリプション -->
+  <meta name="description" content="REST trial application">
+  <meta name="keywords" content="REST bottle angularjs">
+  <meta name="author" content="Takamitsu IIDA">
+
+  <!-- viewportの設定 -->
+  <!-- width=device-width 表示領域の幅を端末画面の幅に設定 -->
+  <!-- initial-scale=1 表示倍率を１倍に設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- faviconの設定 -->
+  <!--
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="bookmark" href="/favicon.ico" />
+  -->
+
+  <!-- ブラウザのウィンドウやタブに表示されるタイトル -->
+  <title>bottle rest api</title>
+
+  <!-- Font Awesome -->
+  <link href="./static/font-awesome-4.6.3/css/font-awesome.css" rel="stylesheet">
+
+  <!-- Bootstrap3 -->
+  <!-- AngularUIを使うのでJavaScriptは不要、CSSだけを読み込む -->
+  <link href="./static/bootstrap-3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AngularJS -->
+  <script src="./static/angular-1.5.8/angular.min.js"></script>
+
+  <!-- Angular UI Router -->
+  <script src="./static/angular-ui-router-0.2.18/angular-ui-router.min.js"></script>
+
+  <!-- Angular animate -->
+  <script src="./static/angular-1.5.8/angular-animate.min.js"></script>
+
+  <!-- Angular UI Bootstrap -->
+  <script src="./static/ui-bootstrap-tpls-1.3.3/ui-bootstrap-tpls-1.3.3.min.js"></script>
+
+  <!-- Angular Resource -->
+  <script src="./static/angular-1.5.8/angular-resource.min.js"></script>
+
+  <!-- サイトのCSS -->
+  <link href="./static/site/css/site.css" rel="stylesheet">
+
+  <!-- サイトのJavaScript -->
+  <script src="./static/site/js/iida.startup.js"></script>
+  <script src="./static/site/js/iida.main.js"></script>
+
+</head>
+
+<!-- bodyをまるごとiida.appの制御下に置く -->
+
+<body ng-app="iida.app" ng-cloak>
+
+  <!-- 一番上に黒背景のナビゲーションバーを表示する -->
+  <div ng-controller="navController as navCtrl">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html"><strong>{{::navCtrl.title}}</strong></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#/setting"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" ng-repeat="link in navCtrl.links">
+            <li><a ng-href="{{::link.href}}">{{::link.a}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Bootstrapコンテナ -->
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <!-- URLごとのコンテンツをここに展開する -->
+      <div ui-view></div>
+    </div>
+  </div>
+
+  <!--
+    以下、先読みスクリプト
+    <script>はng-app配下に置かないと先読みされない点に注意
+  -->
+
+  <!--
+    トップページ
+    url: '/',
+    templateUrl: 'index.tpl',
+    controller: 'topController',
+    controllerAs: 'topCtrl'
+  -->
+  <script type="text/ng-template" id="index.tpl">
+    <div class="container">
+      <br>
+      <div class="jumbotron panel panel-default">
+        <h1>{{:: topCtrl.title }}</h1>
+        <p class="lead">{{:: topCtrl.description }}</p>
+        <hr class="m-y-2">
+        <p>
+          <button type="button" class="btn btn-primary btn-lg" ui-sref="rest">RESTテスト</button>
+        </p>
+        <div>
+          <ul class="text-center about-links list-inline">
+            <i class="fa fa-heart"></i>
+            <li class="date">{{:: topCtrl.date }}</li>
+            <li class="author">{{:: topCtrl.author }}</li>
+            <li class="mail">{{:: topCtrl.mail}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </script>
+
+
+  <!--
+    RESTテストページ
+    url: '/rest',
+    templateUrl: 'rest.tpl',
+    controller: 'restController',
+    controllerAs: 'restCtrl'
+  -->
+  <script type="text/ng-template" id="rest.tpl">
+
+    <h3>REST APIテスト</h3>
+
+    <!-- query -->
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="panel-title">query</div>
+      </div>
+      <div class="panel-body">
+        <p>query()メソッドはデータ一覧を取得します。</p>
+        <p><button type="button" class="btn btn-primary" ng-click="restCtrl.query();$event.preventDefault();">実行</button></p>
+        <ul ng-if="restCtrl.names" ng-repeat="user in restCtrl.users">
+          <li>{{::user | json}}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- save -->
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="panel-title">save</div>
+      </div>
+      <div class="panel-body">
+        <p>save()メソッドはデータを登録します。</p>
+        <form name="saveForm" novalidate>
+          <div class="form-group">
+            <div class="input-group">
+              <!-- IEのオートコンプリートは邪魔なのでオフにする -->
+              <!-- debounceを指定すると文字入力してから指定した時間だけ処理を遅延させる -->
+              <input type="text" class="form-control" autocomplete="off" placeholder="新規ユーザ ..." name="inputNewUser" ng-model="restCtrl.saveParams.newUserName" ng-required="true" ng-model-options="{debounce:100}">
+            </div>
+          </div>
+        </form>
+        <p><button type="button" class="btn btn-primary" ng-disabled="saveForm.inputNewUser.$invalid" ng-click="restCtrl.save();$event.preventDefault();">実行</button></p>
+        <p>{{restCtrl.saveParams.message}}</p>
+      </div>
+    </div>
+
+    <!-- update -->
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="panel-title">update</div>
+      </div>
+      <div class="panel-body">
+        <p>update()メソッドはデータを修正します。</p>
+        <form name="updateForm" novalidate>
+          <div class="form-group">
+            <div class="input-group">
+              <!-- IEのオートコンプリートは邪魔なのでオフにする -->
+              <!-- debounceを指定すると文字入力してから指定した時間だけ処理を遅延させる -->
+              <p>
+                <input type="text" class="form-control" autocomplete="off" placeholder="旧名 ..." name="updateOldUser" ng-model="restCtrl.updateParams.oldUserName" ng-required="true" ng-model-options="{debounce:100}">
+              </p>
+              <p>
+                <input type="text" class="form-control" autocomplete="off" placeholder="新名 ..." name="updateNewUser" ng-model="restCtrl.updateParams.newUserName" ng-required="true" ng-model-options="{debounce:100}">
+              </p>
+            </div>
+          </div>
+        </form>
+        <p>
+          <button type="button" class="btn btn-primary" ng-disabled="updateForm.$invalid" ng-click="restCtrl.update();$event.preventDefault();">実行</button>
+        </p>
+      </div>
+    </div>
+
+    <!-- delete -->
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="panel-title">delete</div>
+      </div>
+      <div class="panel-body">
+        <p>DELETEメソッドはデータを削除します。</p>
+        <form name="deleteForm" novalidate>
+          <div class="form-group">
+            <div class="input-group">
+              <!-- IEのオートコンプリートは邪魔なのでオフにする -->
+              <!-- debounceを指定すると文字入力してから指定した時間だけ処理を遅延させる -->
+              <input type="text" class="form-control" autocomplete="off" placeholder="削除するユーザ ..." name="deleteUser" ng-model="restCtrl.deleteParams.deleteUserName" ng-required="true" ng-model-options="{debounce:100}">
+            </div>
+          </div>
+        </form>
+        <p><button type="button" class="btn btn-primary" ng-disabled="deleteForm.$invalid" ng-click="restCtrl.delete();$event.preventDefault();">実行</button></p>
+      </div>
+    </div>
+
+  </script>
+
+
+  <!--
+    アプリの動作設定
+    url: '/setting',
+    templateUrl: 'setting.tpl',
+    controller: 'settingController',
+    controllerAs: 'settingCtrl'
+  -->
+  <script type="text/ng-template" id="setting.tpl">
+    <h3 class="sub-header">{{:: settingCtrl.title }}</h3>
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <div class="panel-title">デバッグ設定</div>
+      </div>
+      <div class="panel-body">
+        デバッグ表示： {{ settingCtrl.settingParam.debug }}
+        <div class="form-group">
+          <div class="radio">
+            <label>
+              <input type="radio" name="debug" ng-value="true" ng-model="settingCtrl.settingParam.debug"> あり
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="debug" ng-value="false" ng-model="settingCtrl.settingParam.debug"> なし
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="lead">
+      <back></back>
+      <!-- 戻るボタン -->
+    </p>
+  </script>
+
+
+</body>
+
+</html>
